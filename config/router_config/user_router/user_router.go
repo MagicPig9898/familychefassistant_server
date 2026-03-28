@@ -4,7 +4,7 @@ import (
 	"net/http"
 
 	"github.com/MagicPig9898/familychefassistant_server/config/router_config/router_utils"
-	"github.com/MagicPig9898/familychefassistant_server/services/user_service"
+	"github.com/MagicPig9898/familychefassistant_server/logic/user_logic"
 	"github.com/gin-gonic/gin"
 )
 
@@ -15,12 +15,12 @@ func Register(r *gin.RouterGroup) {
 }
 
 type handler struct {
-	userSvc user_service.UserService
+	userLogic user_logic.UserLogic
 }
 
 func newHandler() *handler {
 	return &handler{
-		userSvc: user_service.NewUserService(),
+		userLogic: user_logic.NewUserLogic(),
 	}
 }
 
@@ -42,8 +42,7 @@ func registerUserInfo(r *gin.RouterGroup, h *handler) {
 			c.String(http.StatusBadRequest, "invalid id")
 			return
 		}
-
-		name, err := h.userSvc.GetUserInfo(c.Request.Context(), id)
+		name, err := h.userLogic.GetUserInfo(c.Request.Context(), id)
 		if err != nil {
 			c.String(http.StatusInternalServerError, err.Error())
 			return

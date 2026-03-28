@@ -2,7 +2,7 @@ module github.com/MagicPig9898/familychefassistant_server
 
 go 1.23.3
 
-require github.com/MagicPig9898/easy_db v1.0.0-beta.1
+require github.com/MagicPig9898/easy_db v1.0.0
 
 require github.com/gin-gonic/gin v1.10.1
 

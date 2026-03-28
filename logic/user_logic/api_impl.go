@@ -1,11 +1,11 @@
-package userlogic
+package user_logic
 
 import (
 	"context"
 
 	userrepo "github.com/MagicPig9898/familychefassistant_server/repo/user_repo"
 )
-		
+
 type userLogicImpl struct {
 	repo userrepo.UserRepo
 }
