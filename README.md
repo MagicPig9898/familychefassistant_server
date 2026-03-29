@@ -8,7 +8,7 @@
 
 ```bash
 go get github.com/gin-gonic/gin@v1.10.1
-go get github.com/MagicPig9898/easy_db@v1.0.0-beta.1
+go get github.com/MagicPig9898/easy_db@v1.0.0
 ```
 
 ### 标准库
@@ -30,6 +30,14 @@ go run main.go
 ```
 
 默认监听地址：`http://localhost:8080`
+
+数据库配置支持环境变量（不设置时使用默认值）：
+
+- `DB_HOST`（默认：`localhost`）
+- `DB_PORT`（默认：`3306`）
+- `DB_USER`（默认：`root`）
+- `DB_PASSWORD`（默认：`123456`）
+- `DB_NAME`（默认：`lhs`）
 
 ## 路由清单
 

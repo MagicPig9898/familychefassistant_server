@@ -13,7 +13,7 @@ func main() {
 		log.Fatalf("Failed to initialize database config: %v", err)
 	}
 	defer func() {
-		_ = dbconfig.Close()
+		dbconfig.Close()
 	}()
 
 	// 注册路由
