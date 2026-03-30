@@ -9,7 +9,7 @@ type dbconfig struct {
 var dbmgr *dbconfig
 
 func NewDbConfig() error {
-	mclient, err := mysql.NewClient("localhost", 3306, "root", "123456", "lhs")
+	mclient, err := mysql.NewClient("localhost", 3306, "root", "123456", "mysql")
 	if err != nil {
 		return err
 	}

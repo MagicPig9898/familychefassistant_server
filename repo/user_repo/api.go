@@ -1,6 +1,8 @@
 package user_repo
 
-import "context"
+import (
+	"context"
+)
 
 type UserRepo interface {
 	GetUserByID(ctx context.Context, id int64) (string, error)
