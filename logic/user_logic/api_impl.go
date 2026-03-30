@@ -7,9 +7,11 @@ import (
 	"io"
 	"net/http"
 	"net/url"
+	"time"
 
-	"github.com/MagicPig9898/familychefassistant_server/entity/user_entity"
+	jwt "github.com/MagicPig9898/familychefassistant_server/config/jwt_config"
 	wxconfig "github.com/MagicPig9898/familychefassistant_server/config/wx_config"
+	"github.com/MagicPig9898/familychefassistant_server/entity/user_entity"
 	userrepo "github.com/MagicPig9898/familychefassistant_server/repo/user_repo"
 )
 
@@ -31,13 +33,19 @@ func (l *userLogicImpl) WXLogin(ctx context.Context, userLoginDto *user_entity.U
 	if err != nil {
 		return nil, err
 	}
-
-	// 2. 把 openid 作为 token 回传（后续可替换为 JWT 等）
-	userLoginDto.Token = openid
+	token, err := jwt.GenerateToken(openid, 24*time.Hour)
+	if err != nil {
+		return nil, err
+	}
+	userLoginDto.Token = token
 	return userLoginDto, nil
 }
 
 // code2Session 调用微信 jscode2session 接口，用 code 换 openid
+// 在 微信 体系中：
+// 每个用户访问一个小程序时
+// 微信会给这个用户生成一个 唯一的 openid
+// 这个 ID 只在当前小程序内唯一
 func (l *userLogicImpl) code2Session(ctx context.Context, code string) (string, error) {
 	params := url.Values{}
 	params.Set("appid", wxconfig.AppID)

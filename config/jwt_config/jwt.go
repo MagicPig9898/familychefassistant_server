@@ -20,8 +20,8 @@ func GenerateToken(openID string, expireDuration time.Duration) (string, error) 
 	claims := Claims{
 		OpenID: openID,
 		RegisteredClaims: jwt.RegisteredClaims{
-			ExpiresAt: jwt.NewNumericDate(time.Now().Add(expireDuration)),
-			IssuedAt:  jwt.NewNumericDate(time.Now()),
+			ExpiresAt: jwt.NewNumericDate(time.Now().Add(expireDuration)), // token 的过期时间
+			IssuedAt:  jwt.NewNumericDate(time.Now()),                     //token 的签发时间
 		},
 	}
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
