@@ -12,13 +12,19 @@ type UserLoginDto struct {
 }
 
 // Tb_user 用户表
-type Tb_user struct {
-	ID        string `db:"id"` // 就是openid
-	NickName  string `db:"nick_name"`
-	AvatarUrl string `db:"avatar_url"`
-	City      string `db:"city"`
-	Country   string `db:"country"`
-	Gender    int    `db:"gender"`
+type TbUser struct {
+	ID             string `db:"id"` // 就是openid
+	NickName       string `db:"nick_name"`
+	AvatarUrl      string `db:"avatar_url"`
+	City           string `db:"city"`
+	Country        string `db:"country"`
+	Gender         int    `db:"gender"`
+	FristLoginTime int64  `db:"frist_login_time"`
+}
+
+// ValidTokenDto token 校验请求
+type ValidTokenDto struct {
+	Token string `json:"token"`
 }
 
 // WXLoginResp 微信 jscode2session 接口返回结构

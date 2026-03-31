@@ -1,8 +1,8 @@
 package wx_config
 
 const (
-	AppID     = ""
-	AppSecret = ""
+	AppID     = "wx42845efa7e171153"
+	AppSecret = "a317c26ea4ceb18a8a0800466f18e32b"
 )
 
 // 微信登录凭证校验接口

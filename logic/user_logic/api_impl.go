@@ -3,6 +3,7 @@ package user_logic
 import (
 	"context"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"io"
 	"net/http"
@@ -23,7 +24,7 @@ func newUserLogicImpl() *userLogicImpl {
 	return &userLogicImpl{repo: userrepo.NewUserRepo()}
 }
 
-func (l *userLogicImpl) GetUserInfo(ctx context.Context, id int64) (string, error) {
+func (l *userLogicImpl) GetUserInfo(ctx context.Context, id string) (*user_entity.TbUser, error) {
 	return l.repo.GetUserByID(ctx, id)
 }
 
@@ -37,8 +38,53 @@ func (l *userLogicImpl) WXLogin(ctx context.Context, userLoginDto *user_entity.U
 	if err != nil {
 		return nil, err
 	}
+
+	_, err = l.repo.GetUserByID(ctx, openid)
+	if err != nil {
+		err = l.repo.InsertUser(ctx, &user_entity.TbUser{
+			ID:             openid,
+			NickName:       userLoginDto.NickName,
+			AvatarUrl:      userLoginDto.AvatarUrl,
+			City:           userLoginDto.City,
+			Country:        userLoginDto.Country,
+			Gender:         userLoginDto.Gender,
+			FristLoginTime: time.Now().Unix(),
+		})
+		return nil, err
+	} else {
+		err = l.repo.UpdateUser(ctx, &user_entity.TbUser{
+			ID:        openid,
+			NickName:  userLoginDto.NickName,
+			AvatarUrl: userLoginDto.AvatarUrl,
+			City:      userLoginDto.City,
+			Country:   userLoginDto.Country,
+			Gender:    userLoginDto.Gender,
+		})
+		if err != nil {
+			fmt.Println("update user err:", err)
+			return nil, err
+		}
+	}
 	userLoginDto.Token = token
 	return userLoginDto, nil
+}
+
+func (l *userLogicImpl) ValidToken(ctx context.Context, token string) (string, error) {
+	claims, err := jwt.ParseToken(token)
+	if err != nil {
+		return "", err
+	}
+	// 判断 token 是否过期
+	if time.Now().Unix() > claims.ExpiresAt.Unix() {
+		return "", errors.New("token expired")
+	}
+	// 如果 token 有效，创建一个新的 token
+	newtoken, err := jwt.GenerateToken(claims.OpenID, 24*time.Hour)
+	if err != nil {
+		return "", err
+	}
+	return newtoken, nil
+
 }
 
 // code2Session 调用微信 jscode2session 接口，用 code 换 openid

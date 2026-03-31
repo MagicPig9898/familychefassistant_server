@@ -14,6 +14,7 @@ func Register(r *gin.RouterGroup) {
 	registerHealthz(r)
 	registerUserInfo(r, h)
 	registerWXLogin(r, h)
+	registerValidToken(r, h)
 }
 
 type handler struct {
@@ -34,22 +35,17 @@ func registerHealthz(r *gin.RouterGroup) {
 
 func registerUserInfo(r *gin.RouterGroup, h *handler) {
 	r.GET("/info", func(c *gin.Context) {
-		idText := c.Query("id")
-		if idText == "" {
+		id := c.Query("id")
+		if id == "" {
 			c.JSON(http.StatusBadRequest, router_utils.Fail("missing id"))
 			return
 		}
-		id, err := router_utils.ParseInt64Query(idText)
-		if err != nil {
-			c.JSON(http.StatusBadRequest, router_utils.Fail("invalid id"))
-			return
-		}
-		name, err := h.userLogic.GetUserInfo(c.Request.Context(), id)
+		tb, err := h.userLogic.GetUserInfo(c.Request.Context(), id)
 		if err != nil {
 			c.JSON(http.StatusInternalServerError, router_utils.Fail(err.Error()))
 			return
 		}
-		c.JSON(http.StatusOK, router_utils.Success(gin.H{"id": id, "name": name})) // gin.H 就是 map[string]any 的类型别名，gin 会把它序列化成 JSON 返回给客户端
+		c.JSON(http.StatusOK, router_utils.Success(tb))
 	})
 }
 
@@ -66,5 +62,21 @@ func registerWXLogin(r *gin.RouterGroup, h *handler) {
 			return
 		}
 		c.JSON(http.StatusOK, router_utils.Success(resp))
+	})
+}
+
+func registerValidToken(r *gin.RouterGroup, h *handler) {
+	r.POST("/validtoken", func(c *gin.Context) {
+		var req user_entity.ValidTokenDto
+		if err := c.ShouldBindJSON(&req); err != nil {
+			c.JSON(http.StatusBadRequest, router_utils.Fail("参数错误"))
+			return
+		}
+		newToken, err := h.userLogic.ValidToken(c.Request.Context(), req.Token)
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, router_utils.Fail(err.Error()))
+			return
+		}
+		c.JSON(http.StatusOK, router_utils.Success(newToken))
 	})
 }
