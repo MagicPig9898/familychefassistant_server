@@ -3,7 +3,7 @@ package user_entity
 // UserLoginDto 用户登录Dto
 type UserLoginDto struct {
 	Code      string `json:"code"`
-	AvatarUrl string `json:"avatarUrl"`
+	AvatarUrl string `json:"avatar_url"`
 	City      string `json:"city"`
 	Country   string `json:"country"`
 	Gender    int    `json:"gender"`
