@@ -50,18 +50,7 @@ func (l *userLogicImpl) WXLogin(ctx context.Context, userLoginDto *user_entity.U
 			Gender:         userLoginDto.Gender,
 			FristLoginTime: time.Now().Unix(),
 		})
-		return nil, err
-	} else {
-		err = l.repo.UpdateUser(ctx, &user_entity.TbUser{
-			ID:        openid,
-			NickName:  userLoginDto.NickName,
-			AvatarUrl: userLoginDto.AvatarUrl,
-			City:      userLoginDto.City,
-			Country:   userLoginDto.Country,
-			Gender:    userLoginDto.Gender,
-		})
 		if err != nil {
-			fmt.Println("update user err:", err)
 			return nil, err
 		}
 	}
