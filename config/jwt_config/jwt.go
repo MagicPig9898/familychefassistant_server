@@ -4,10 +4,9 @@ import (
 	"errors"
 	"time"
 
+	conf "github.com/MagicPig9898/familychefassistant_server/conf"
 	"github.com/golang-jwt/jwt/v5"
 )
-
-var salt = []byte("abcd")
 
 // Claims 自定义载荷
 type Claims struct {
@@ -25,11 +24,12 @@ func GenerateToken(openID string, expireDuration time.Duration) (string, error) 
 		},
 	}
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
-	return token.SignedString(salt)
+	return token.SignedString([]byte(conf.Cfg.JWT.Salt))
 }
 
 // ParseToken 解析 token，返回 Claims
 func ParseToken(tokenString string) (*Claims, error) {
+	salt := []byte(conf.Cfg.JWT.Salt)
 	token, err := jwt.ParseWithClaims(tokenString, &Claims{}, func(t *jwt.Token) (interface{}, error) {
 		return salt, nil
 	})

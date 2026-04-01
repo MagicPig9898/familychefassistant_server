@@ -10,8 +10,8 @@ import (
 	"net/url"
 	"time"
 
+	conf "github.com/MagicPig9898/familychefassistant_server/conf"
 	jwt "github.com/MagicPig9898/familychefassistant_server/config/jwt_config"
-	wxconfig "github.com/MagicPig9898/familychefassistant_server/config/wx_config"
 	"github.com/MagicPig9898/familychefassistant_server/entity/user_entity"
 	userrepo "github.com/MagicPig9898/familychefassistant_server/repo/user_repo"
 )
@@ -94,12 +94,12 @@ func (l *userLogicImpl) ValidToken(ctx context.Context, token string) (string, e
 // 这个 ID 只在当前小程序内唯一
 func (l *userLogicImpl) code2Session(ctx context.Context, code string) (string, error) {
 	params := url.Values{}
-	params.Set("appid", wxconfig.AppID)
-	params.Set("secret", wxconfig.AppSecret)
+	params.Set("appid", conf.Cfg.WX.AppID)
+	params.Set("secret", conf.Cfg.WX.AppSecret)
 	params.Set("js_code", code)
 	params.Set("grant_type", "authorization_code")
 
-	reqURL := fmt.Sprintf("%s?%s", wxconfig.Code2SessionURL, params.Encode())
+	reqURL := fmt.Sprintf("%s?%s", conf.Cfg.WX.Code2SessionURL, params.Encode())
 
 	req, err := http.NewRequestWithContext(ctx, http.MethodGet, reqURL, nil)
 	if err != nil {

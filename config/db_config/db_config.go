@@ -1,6 +1,9 @@
 package db_config
 
-import "github.com/MagicPig9898/easy_db/mysql"
+import (
+	"github.com/MagicPig9898/easy_db/mysql"
+	conf "github.com/MagicPig9898/familychefassistant_server/conf"
+)
 
 type dbconfig struct {
 	mclient *mysql.Client
@@ -9,7 +12,8 @@ type dbconfig struct {
 var dbmgr *dbconfig
 
 func NewDbConfig() error {
-	mclient, err := mysql.NewClient("localhost", 3306, "root", "123456", "mysql")
+	c := conf.Cfg.DB
+	mclient, err := mysql.NewClient(c.Host, c.Port, c.User, c.Password, c.DBName)
 	if err != nil {
 		return err
 	}
