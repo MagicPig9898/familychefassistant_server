@@ -2,3 +2,30 @@
 GET http://localhost:8080/api/v1/fooddicts/fooddicts
 Content-Type: application/json
 
+### 添加食物字典
+POST http://localhost:8080/api/v1/fooddicts/fooddict
+Content-Type: application/json
+
+{
+    "id": 0,
+    "class_id": 0,
+    "name": "白菜",
+    "image": "",
+    "description": "这种蔬菜富含维生素C和维生素A，对护眼有好处，也可以帮助降低血脂。",
+    "good": "如果是肝火旺的人，可以尝试吃点白菜，因为它富含维生素C和维生素A，对护眼有好处，也可以帮助降低血脂。",
+    "bad": "如果是气血虚的人，就少吃一些，因为性寒，对气血虚的人有伤害。"
+}
+
+### 获取所有食物分类
+GET http://localhost:8080/api/v1/fooddicts/allfoodclass
+Content-Type: application/json
+
+
+### 添加食物分类
+POST http://localhost:8080/api/v1/fooddicts/foodclass
+Content-Type: application/json
+
+{
+    "id": 0,
+    "name": "蔬菜"
+}

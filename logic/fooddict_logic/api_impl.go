@@ -18,3 +18,15 @@ func newFoodDictLogicImpl() *foodDictLogicImpl {
 func (fd *foodDictLogicImpl) GetFoodDicts(ctx context.Context) ([]*fooddict_entity.TbFoodDict, error) {
 	return fd.fdr.GetFoodDicts(ctx)
 }
+
+func (fd *foodDictLogicImpl) GetAllFoodClass(ctx context.Context) ([]*fooddict_entity.TbFoodClass, error) {
+	return fd.fdr.GetAllFoodClass(ctx)
+}
+
+func (fd *foodDictLogicImpl) AddFoodClass(ctx context.Context, class *fooddict_entity.TbFoodClass) error {
+	return fd.fdr.AddFoodClass(ctx, class)
+}
+
+func (fd *foodDictLogicImpl) AddFoodDict(ctx context.Context, dict *fooddict_entity.TbFoodDict) error {
+	return fd.fdr.AddFoodDict(ctx, dict)
+}

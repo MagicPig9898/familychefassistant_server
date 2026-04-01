@@ -9,3 +9,8 @@ type TbFoodDict struct {
 	Good    string `json:"good" db:"good"`
 	Bad     string `json:"bad" db:"bad"`
 }
+
+type TbFoodClass struct {
+	ID   int64  `json:"id" db:"id"`
+	Name string `json:"name" db:"name"`
+}
