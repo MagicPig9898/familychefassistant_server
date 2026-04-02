@@ -24,6 +24,7 @@ func (fd *foodDictLogicImpl) GetAllFoodClass(ctx context.Context) ([]*fooddict_e
 }
 
 func (fd *foodDictLogicImpl) AddFoodClass(ctx context.Context, class *fooddict_entity.TbFoodClass) error {
+
 	return fd.fdr.AddFoodClass(ctx, class)
 }
 
