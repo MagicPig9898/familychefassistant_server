@@ -13,6 +13,17 @@ type AppConfig struct {
 	DB     DBConfig     `yaml:"db"`
 	JWT    JWTConfig    `yaml:"jwt"`
 	WX     WXConfig     `yaml:"wx"`
+	Log    LogConfig    `yaml:"log"`
+}
+
+// LogConfig 日志配置
+type LogConfig struct {
+	Level      string `yaml:"level"`       // 日志级别: debug, info, warn, error
+	FilePath   string `yaml:"file_path"`   // 日志文件路径，如 ./logs/app.log
+	MaxSize    int    `yaml:"max_size"`    // 单个日志文件最大大小（MB），超过后切割
+	MaxAge     int    `yaml:"max_age"`     // 日志文件保留天数
+	MaxBackups int    `yaml:"max_backups"` // 保留的旧日志文件最大数量
+	Compress   bool   `yaml:"compress"`    // 是否压缩旧日志文件
 }
 
 type ServerConfig struct {

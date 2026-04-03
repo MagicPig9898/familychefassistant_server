@@ -5,6 +5,7 @@ import (
 
 	"github.com/MagicPig9898/easy_db/mysql"
 	dbconfig "github.com/MagicPig9898/familychefassistant_server/config/db_config"
+	log "github.com/MagicPig9898/familychefassistant_server/config/log_config"
 	"github.com/MagicPig9898/familychefassistant_server/entity/user_entity"
 )
 
@@ -33,6 +34,7 @@ func (r *userRepoImpl) GetUserByID(ctx context.Context, id string) (*user_entity
 	 where id = ?`
 	err := r.mcli.QueryOne(ctx, tb, sql, id)
 	if err != nil {
+		log.Errorf("GetUserByID failed: %v", err)
 		return nil, err
 	}
 	return tb, nil
@@ -61,6 +63,7 @@ func (r *userRepoImpl) InsertUser(ctx context.Context, user *user_entity.TbUser)
 	 :last_login_time)`
 	err := r.mcli.InsertOneNamed(ctx, sql, user)
 	if err != nil {
+		log.Errorf("InsertUser failed: %v", err)
 		return err
 	}
 	return nil
@@ -78,6 +81,7 @@ func (r *userRepoImpl) UpdateUser(ctx context.Context, user *user_entity.TbUser)
 	 where id = :id`
 	err := r.mcli.UpdateOneNamed(ctx, sql, user)
 	if err != nil {
+		log.Errorf("UpdateUser failed: %v", err)
 		return err
 	}
 	return nil

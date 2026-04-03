@@ -6,6 +6,7 @@ import (
 	"time"
 
 	jwt "github.com/MagicPig9898/familychefassistant_server/config/jwt_config"
+	log "github.com/MagicPig9898/familychefassistant_server/config/log_config"
 	"github.com/MagicPig9898/familychefassistant_server/entity/user_entity"
 	userrepo "github.com/MagicPig9898/familychefassistant_server/repo/user_repo"
 )
@@ -26,6 +27,7 @@ func (l *userLogicImpl) WXLogin(ctx context.Context, userLoginDto *user_entity.U
 	// 1. 用 code 请求微信 jscode2session 接口换取 openid
 	openid, err := code2Session(ctx, userLoginDto.Code)
 	if err != nil {
+		log.Errorf("code2Session failed: %v", err)
 		return nil, err
 	}
 
@@ -41,6 +43,7 @@ func (l *userLogicImpl) WXLogin(ctx context.Context, userLoginDto *user_entity.U
 			FristLoginTime: time.Now().Unix(),
 		})
 		if err != nil {
+			log.Errorf("%s InsertUser failed: %v", openid, err)
 			return nil, err // 登录失败
 		}
 	} else {
@@ -55,31 +58,38 @@ func (l *userLogicImpl) WXLogin(ctx context.Context, userLoginDto *user_entity.U
 			LastLoginTime: time.Now().Unix(),
 		})
 		if err != nil {
-			// 更新失败
+			// 更新失败，打印警告即可
+			log.Warnf("%s UpdateUser failed: %v", openid, err)
 		}
 	}
 	token, err := jwt.GenerateToken(openid, 24*time.Hour)
 	if err != nil {
+		log.Errorf("%s GenerateToken failed: %v", openid, err)
 		return nil, err
 	}
 	userLoginDto.Token = token
+	log.Infof("%s Login success: %s", openid, token)
 	return userLoginDto, nil
 }
 
 func (l *userLogicImpl) ValidToken(ctx context.Context, token string) (string, error) {
 	claims, err := jwt.ParseToken(token)
 	if err != nil {
+		log.Errorf("ParseToken failed: %v", err)
 		return "", err
 	}
 	// 判断 token 是否过期
 	if time.Now().Unix() > claims.ExpiresAt.Unix() {
+		log.Errorf("%s Token expired: %v", claims.OpenID, err)
 		return "", errors.New("token expired")
 	}
 	// 如果 token 有效，创建一个新的 token
 	newtoken, err := jwt.GenerateToken(claims.OpenID, 24*time.Hour)
 	if err != nil {
+		log.Errorf("%s GenerateToken failed: %v", claims.OpenID, err)
 		return "", err
 	}
+	log.Infof("%s Token valid: %s", claims.OpenID, newtoken)
 	return newtoken, nil
 
 }
