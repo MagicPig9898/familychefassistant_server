@@ -3,9 +3,9 @@ package user_router
 import (
 	"net/http"
 
-	"github.com/MagicPig9898/familychefassistant_server/config/router_config/router_utils"
 	"github.com/MagicPig9898/familychefassistant_server/entity/user_entity"
 	"github.com/MagicPig9898/familychefassistant_server/logic/user_logic"
+	"github.com/MagicPig9898/familychefassistant_server/router/router_utils"
 	"github.com/gin-gonic/gin"
 )
 

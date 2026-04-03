@@ -6,7 +6,7 @@ import (
 
 	conf "github.com/MagicPig9898/familychefassistant_server/conf"
 	dbconfig "github.com/MagicPig9898/familychefassistant_server/config/db_config"
-	"github.com/MagicPig9898/familychefassistant_server/config/router_config"
+	router_config "github.com/MagicPig9898/familychefassistant_server/router"
 )
 
 func main() {

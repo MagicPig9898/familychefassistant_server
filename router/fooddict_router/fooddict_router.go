@@ -3,9 +3,9 @@ package fooddict_router
 import (
 	"net/http"
 
-	"github.com/MagicPig9898/familychefassistant_server/config/router_config/router_utils"
 	"github.com/MagicPig9898/familychefassistant_server/entity/fooddict_entity"
 	"github.com/MagicPig9898/familychefassistant_server/logic/fooddict_logic"
+	"github.com/MagicPig9898/familychefassistant_server/router/router_utils"
 	"github.com/gin-gonic/gin"
 )
 

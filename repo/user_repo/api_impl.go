@@ -23,9 +23,11 @@ func (r *userRepoImpl) GetUserByID(ctx context.Context, id string) (*user_entity
 		nick_name,
 		avatar_url,
 		city,
+		province,
 		country,
 		gender,
-		frist_login_time
+		frist_login_time,
+		last_login_time
 	 from 
 	 tb_user 
 	 where id = ?`
@@ -42,17 +44,21 @@ func (r *userRepoImpl) InsertUser(ctx context.Context, user *user_entity.TbUser)
 		nick_name,
 		avatar_url,
 		city,
+		province,
 		country,
 		gender,
-		frist_login_time
+		frist_login_time,
+		last_login_time
 	) values (
 	 :id,
 	 :nick_name, 
 	 :avatar_url, 
 	 :city, 
+	 :province,
 	 :country, 
 	 :gender,
-	 :frist_login_time)`
+	 :frist_login_time,
+	 :last_login_time)`
 	err := r.mcli.InsertOneNamed(ctx, sql, user)
 	if err != nil {
 		return err
@@ -65,8 +71,10 @@ func (r *userRepoImpl) UpdateUser(ctx context.Context, user *user_entity.TbUser)
 		nick_name = :nick_name,
 		avatar_url = :avatar_url,
 		city = :city,
+		province = :province,
 		country = :country,
-		gender = :gender
+		gender = :gender,
+		last_login_time = :last_login_time
 	 where id = :id`
 	err := r.mcli.UpdateOneNamed(ctx, sql, user)
 	if err != nil {

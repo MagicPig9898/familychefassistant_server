@@ -1,8 +1,8 @@
-package router_config
+package router
 
 import (
-	"github.com/MagicPig9898/familychefassistant_server/config/router_config/fooddict_router"
-	"github.com/MagicPig9898/familychefassistant_server/config/router_config/user_router"
+	"github.com/MagicPig9898/familychefassistant_server/router/fooddict_router"
+	"github.com/MagicPig9898/familychefassistant_server/router/user_router"
 	"github.com/gin-gonic/gin"
 )
 

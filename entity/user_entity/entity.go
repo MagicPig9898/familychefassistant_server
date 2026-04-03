@@ -5,6 +5,7 @@ type UserLoginDto struct {
 	Code      string `json:"code"`
 	AvatarUrl string `json:"avatar_url"`
 	City      string `json:"city"`
+	Province  string `json:"province"`
 	Country   string `json:"country"`
 	Gender    int    `json:"gender"`
 	NickName  string `json:"nick_name"`
@@ -17,9 +18,11 @@ type TbUser struct {
 	NickName       string `db:"nick_name"`
 	AvatarUrl      string `db:"avatar_url"`
 	City           string `db:"city"`
+	Province       string `db:"province"`
 	Country        string `db:"country"`
 	Gender         int    `db:"gender"`
 	FristLoginTime int64  `db:"frist_login_time"`
+	LastLoginTime  int64  `db:"last_login_time"`
 }
 
 // ValidTokenDto token 校验请求
